@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+   flowable-ui:
+      container_name: flowable-ui
+      image: flowable/flowable-ui:latest
+      ports:
+         - 8089:8080
+      networks:
+         - flowable-net
+      depends_on:
+         - postgres
+      environment:
+         - SERVER_PORT=8080
+         - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+         - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/flowable
+         - SPRING_DATASOURCE_USERNAME=postgres
+         - SPRING_DATASOURCE_PASSWORD=mysecretpassword
+         - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+         - SPRING_JPA_HIBERNATE-DDL-AUTO=update
+
+   postgres:
+      container_name: flowable-postgres
+      image: postgres:13
+      ports:
+         - 5432:5432
+      networks:
+         - flowable-net
+      environment:
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=mysecretpassword
+         - POSTGRES_DB=flowable
+      volumes:
+         - postgres_data:/var/lib/postgresql/data
+
+networks:
+   flowable-net:
+      driver: bridge
+
+volumes:
+   postgres_data:

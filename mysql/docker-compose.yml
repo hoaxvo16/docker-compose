@@ -1,0 +1,21 @@
+version: '3.8' # Specify the Docker Compose version (adjust if needed)
+
+services:
+   mysql-db:
+      image: mysql:latest # Use the official MySQL image, specify a version if needed
+      environment:
+         MYSQL_DATABASE: admin # Replace with your desired database name
+         MYSQL_ROOT_PASSWORD: root # Replace with a strong password
+         MYSQL_USER: hoa # Optional: Create a user for your application (replace with username)
+         MYSQL_PASSWORD: dock # Optional: Password for the created user (replace with password)
+         MYSQL_WAIT_TIMEOUT: 31536000
+         MYSQL_INTERACTIVE_TIMEOUT: 31536000
+         MYSQL_CONNECT_TIMEOUT: 31536000
+         MYSQL_NET_WRITE_TIMEOUT: 31536000
+      volumes:
+         - db_data:/var/lib/mysql # Persistent storage for your database data
+      ports:
+         - '3306:3306' # Map the container port (3306) to the host port (3306)
+
+volumes:
+   db_data: # Define a volume to persist data
